@@ -1,0 +1,19 @@
+menuentry ’MT15 Arch Linux’ −−class arch −−class gnu−linux −−class gnu −−class os
+
+$menuentry_id_option ’gnulinux−core repo kernel−true−c04fc62e-1f76-4ede-b12a-a8cff3782b57’ {
+	load_video
+	set gfxpayload=keep
+	insmod gzio
+	insmod part_msdos
+	insmod ext2
+	set root=’hd0,msdos1’
+if [ x$feature_platform_search_hint = xy ]; then
+	search −−no−floppy −−fs−uuid −−set=root −−hint−bios=hd0,msdos1−−hint−efi=hd0,msdos1 −−hint−baremetal=ahci0,msdos5 c04fc62e-1f76-4ede-b12a-a8cff3782b57
+else
+	search −−no−floppy −−fs−uuid −−set=root
+fi
+	echo ’Loading Linux core repo kernel ... ’
+	linux /boot/vmlinuz−4.10.5-Final root=UUID=c04fc62e-1f76-4ede-b12a-a8cff3782b57  rw quiet
+	echo ’Loading initial ramdisk ... ’
+	initrd /boot/initramfs−4.10.5-Final.img
+}
